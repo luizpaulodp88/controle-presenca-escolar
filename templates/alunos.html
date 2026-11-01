@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Alunos | Presença Escolar{% endblock %}
+{% block content %}
+<div class="cabecalho-pagina">
+  <div><p class="sobretitulo">CADASTRO</p><h1>Alunos</h1></div>
+  <a class="botao" href="{{ url_for('novo_aluno') }}">＋ Novo aluno</a>
+</div>
+<form class="busca" method="get">
+  <input name="q" value="{{ busca }}" placeholder="Buscar por nome, matrícula ou turma">
+  <button class="botao secundario" type="submit">Buscar</button>
+</form>
+<div class="tabela-wrap">
+<table>
+  <thead><tr><th>Nome</th><th>Matrícula</th><th>Turma</th><th>Ações</th></tr></thead>
+  <tbody>
+  {% for aluno in alunos %}
+    <tr>
+      <td>{{ aluno.nome }}</td><td>{{ aluno.matricula }}</td><td>{{ aluno.turma }}</td>
+      <td class="acoes">
+        <a href="{{ url_for('editar_aluno', aluno_id=aluno.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('excluir_aluno', aluno_id=aluno.id) }}" onsubmit="return confirm('Deseja excluir este aluno e seu histórico de presença?')">
+          <button class="link-perigo" type="submit">Excluir</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4" class="vazio">Nenhum aluno encontrado.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Painel | Presença Escolar{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="sobretitulo">PAINEL DE CONTROLE</p>
+  <h1>Gestão de presença escolar</h1>
+  <p>Cadastre alunos, registre chamadas e acompanhe os indicadores de frequência.</p>
+  <a class="botao" href="{{ url_for('chamada') }}">Registrar chamada</a>
+</section>
+<section class="cartoes">
+  <article class="cartao"><span>Alunos cadastrados</span><strong>{{ total_alunos }}</strong></article>
+  <article class="cartao"><span>Turmas cadastradas</span><strong>{{ total_turmas }}</strong></article>
+  <article class="cartao"><span>Registros de hoje</span><strong>{{ chamada_hoje }}</strong></article>
+  <article class="cartao"><span>Presentes hoje</span><strong>{{ presentes_hoje }}</strong></article>
+</section>
+<section class="painel">
+  <h2>Comece por aqui</h2>
+  <div class="atalhos">
+    <a href="{{ url_for('novo_aluno') }}">＋ Cadastrar aluno</a>
+    <a href="{{ url_for('chamada') }}">✓ Fazer chamada</a>
+    <a href="{{ url_for('relatorios') }}">▤ Consultar relatórios</a>
+  </div>
+  <p class="nota">Data do sistema: {{ hoje }}. Cadastre alunos antes de registrar uma chamada.</p>
+</section>
+{% endblock %}

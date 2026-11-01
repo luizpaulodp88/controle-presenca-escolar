@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Relatórios | Presença Escolar{% endblock %}
+{% block content %}
+<div class="cabecalho-pagina"><div><p class="sobretitulo">ACOMPANHAMENTO</p><h1>Relatório de frequência</h1></div></div>
+<form class="filtros" method="get">
+  <label>Filtrar por turma
+    <select name="turma">
+      <option value="">Todas as turmas</option>
+      {% for t in turmas %}<option value="{{ t }}" {% if t == turma %}selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+  </label>
+  <button class="botao" type="submit">Filtrar</button>
+</form>
+<div class="tabela-wrap">
+<table>
+  <thead><tr><th>Aluno</th><th>Turma</th><th>Aulas registradas</th><th>Presenças</th><th>Faltas</th><th>Justificadas</th><th>Frequência</th></tr></thead>
+  <tbody>
+  {% for r in linhas %}
+    <tr>
+      <td>{{ r.nome }}<small class="subtexto">{{ r.matricula }}</small></td>
+      <td>{{ r.turma }}</td><td>{{ r.registradas }}</td><td>{{ r.presentes }}</td>
+      <td>{{ r.ausentes }}</td><td>{{ r.justificados }}</td>
+      <td>{% if r.percentual is not none %}<strong class="{% if r.percentual < 75 %}texto-perigo{% endif %}">{{ r.percentual }}%</strong>{% else %}Sem registros{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7" class="vazio">Ainda não há alunos cadastrados.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<p class="nota">O percentual é calculado como presenças ÷ registros de chamada × 100. Ajuste os critérios conforme as regras oficiais da instituição.</p>
+{% endblock %}

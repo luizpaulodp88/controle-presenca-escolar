@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Chamada | Presença Escolar{% endblock %}
+{% block content %}
+<div class="cabecalho-pagina"><div><p class="sobretitulo">FREQUÊNCIA</p><h1>Fazer chamada</h1></div></div>
+<form class="filtros" method="get">
+  <label>Data <input type="date" name="data" required value="{{ data_chamada }}"></label>
+  <label>Turma
+    <select name="turma" required>
+      <option value="">Selecione uma turma</option>
+      {% for t in turmas %}<option value="{{ t }}" {% if t == turma_selecionada %}selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+  </label>
+  <button class="botao" type="submit">Carregar alunos</button>
+</form>
+{% if turma_selecionada and not alunos %}
+  <p class="vazio">Não há alunos cadastrados nesta turma. Cadastre alunos primeiro.</p>
+{% endif %}
+{% if alunos %}
+<form method="post" class="painel">
+  <input type="hidden" name="data" value="{{ data_chamada }}">
+  <input type="hidden" name="turma" value="{{ turma_selecionada }}">
+  <div class="tabela-wrap">
+  <table>
+    <thead><tr><th>Aluno</th><th>Matrícula</th><th>Situação</th></tr></thead>
+    <tbody>
+    {% for aluno in alunos %}
+      <tr>
+        <td>{{ aluno.nome }}</td><td>{{ aluno.matricula }}</td>
+        <td><select name="status_{{ aluno.id }}">
+          {% for status in ['Presente', 'Ausente', 'Justificado'] %}
+          <option value="{{ status }}" {% if (aluno.status or 'Presente') == status %}selected{% endif %}>{{ status }}</option>
+          {% endfor %}
+        </select></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <button class="botao" type="submit">Salvar chamada</button>
+  <p class="nota">Se uma chamada já existir para essa data, salvar novamente atualizará os status.</p>
+</form>
+{% endif %}
+{% endblock %}
